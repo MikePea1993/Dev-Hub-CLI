@@ -1,0 +1,30 @@
+{
+  "name": "dev-hub-cli",
+  "version": "1.0.0",
+  "description": "CLI tool for creating development project boilerplates",
+  "main": "bin/index.js",
+  "bin": {
+    "devhub": "./bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikePea1993/Dev-Hub-CLI.git"
+  },
+  "keywords": [
+    "cli",
+    "boilerplate",
+    "react",
+    "electron",
+    "html",
+    "fivem",
+    "redm",
+    "template",
+    "project-generator"
+  ],
+  "author": "Mike Pea",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MikePea1993/Dev-Hub-CLI/issues"
+  },
+  "homepage": "https://github.com/MikePea1993/Dev-Hub-CLI#readme"
+}
