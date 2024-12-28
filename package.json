@@ -1,10 +1,17 @@
 {
   "name": "dev-hub-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI tool for creating development project boilerplates",
   "main": "bin/index.js",
   "bin": {
     "devhub": "./bin/index.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.4.1",
+    "fs-extra": "^11.1.0",
+    "inquirer": "^8.2.4",
+    "ora": "^5.4.1"
   },
   "repository": {
     "type": "git",
