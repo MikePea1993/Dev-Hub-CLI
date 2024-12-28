@@ -8,6 +8,7 @@ const fs = require("fs-extra");
 const { exec } = require("child_process");
 const os = require("os");
 const ora = require("ora");
+const packageJson = require("../package.json");
 
 // Add runCommand function
 async function runCommand(command, cwd) {
@@ -45,7 +46,7 @@ console.log(
 );
 
 program
-  .version("1.0.0")
+  .version(packageJson.version)
   .description("CLI tool for creating development project boilerplates");
 
 program
