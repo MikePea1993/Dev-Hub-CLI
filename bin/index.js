@@ -166,14 +166,6 @@ program
             spinner.start("Installing dependencies...");
             await runCommand("npm install", projectPath);
             spinner.succeed("Dependencies installed");
-            // Open VS Code
-            spinner.start("Opening project in VS Code...");
-            try {
-              await exec(`code "${projectPath}"`);
-              spinner.succeed("Project opened in VS Code");
-            } catch (error) {
-              spinner.warn("VS Code could not be opened automatically");
-            }
             break;
 
           case "react":
@@ -183,14 +175,6 @@ program
             spinner.start("Installing dependencies...");
             await runCommand("npm install", projectPath);
             spinner.succeed("Dependencies installed");
-            // Open VS Code
-            spinner.start("Opening project in VS Code...");
-            try {
-              await exec(`code "${projectPath}"`);
-              spinner.succeed("Project opened in VS Code");
-            } catch (error) {
-              spinner.warn("VS Code could not be opened automatically");
-            }
             break;
 
           case "electron":
@@ -200,14 +184,6 @@ program
             spinner.start("Installing dependencies...");
             await runCommand("npm install", projectPath);
             spinner.succeed("Dependencies installed");
-            // Open VS Code
-            spinner.start("Opening project in VS Code...");
-            try {
-              await exec(`code "${projectPath}"`);
-              spinner.succeed("Project opened in VS Code");
-            } catch (error) {
-              spinner.warn("VS Code could not be opened automatically");
-            }
             break;
 
           case "fivem":
