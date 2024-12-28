@@ -150,15 +150,8 @@ program
       };
     }
 
-    // Create project directory in Documents/DevHub like the desktop app
-    const baseProjectPath = path.join(os.homedir(), "Documents", "DevHub");
-
-    // Create DevHub directory if it doesn't exist
-    if (!fs.existsSync(baseProjectPath)) {
-      fs.mkdirSync(baseProjectPath, { recursive: true });
-    }
-
-    const projectPath = path.join(baseProjectPath, projectName);
+    // Create project in current directory
+    const projectPath = path.join(process.cwd(), projectName);
 
     try {
       console.log(); // Add a blank line for spacing
