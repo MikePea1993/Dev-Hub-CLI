@@ -1,10 +1,10 @@
 {
   "name": "dev-hub-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CLI tool for creating development project boilerplates",
   "main": "bin/index.js",
   "bin": {
-    "devhub": "./bin/index.js"
+    "devhub": "bin/index.js"
   },
   "dependencies": {
     "chalk": "^4.1.2",
@@ -28,6 +28,14 @@
     "template",
     "project-generator"
   ],
+  "files": [
+    "bin/",
+    "src/"
+  ],
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=14"
+  },
   "author": "Mike Pea",
   "license": "MIT",
   "bugs": {
