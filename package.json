@@ -1,6 +1,6 @@
 {
   "name": "dev-hub-cli",
-  "version": "1.04",
+  "version": "1.0.5",
   "description": "CLI tool for creating development project boilerplates",
   "main": "bin/index.js",
   "bin": {
