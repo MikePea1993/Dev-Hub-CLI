@@ -1,6 +1,6 @@
 {
   "name": "dev-hub-cli",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "CLI tool for creating development project boilerplates",
   "main": "bin/index.js",
   "bin": {
@@ -11,7 +11,8 @@
     "commander": "^9.4.1",
     "fs-extra": "^11.1.0",
     "inquirer": "^8.2.4",
-    "ora": "^5.4.1"
+    "ora": "^5.4.1",
+    "semver": "^7.5.4"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,9 @@
     "html",
     "fivem",
     "redm",
+    "vue",
+    "vuejs",
+    "vue3",
     "template",
     "project-generator"
   ],

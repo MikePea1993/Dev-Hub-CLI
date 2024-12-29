@@ -8,9 +8,62 @@ const fs = require("fs-extra");
 const { exec } = require("child_process");
 const os = require("os");
 const ora = require("ora");
+const https = require("https");
+const semver = require("semver");
 const packageJson = require("../package.json");
 
-// Add runCommand function
+async function checkForUpdates() {
+  return new Promise((resolve) => {
+    https
+      .get(
+        "https://registry.npmjs.org/dev-hub-cli/latest",
+        { headers: { "User-Agent": "node" } },
+        (res) => {
+          let data = "";
+
+          res.on("data", (chunk) => {
+            data += chunk;
+          });
+          res.on("end", () => {
+            try {
+              const latestVersion = JSON.parse(data).version;
+              const currentVersion = packageJson.version;
+
+              if (semver.gt(latestVersion, currentVersion)) {
+                console.log(
+                  chalk.yellow("\n┌────────────────────────────────────────┐")
+                );
+                console.log(
+                  chalk.yellow("│           Update Available!            │")
+                );
+                console.log(
+                  chalk.yellow("└────────────────────────────────────────┘")
+                );
+                console.log(chalk.white(`Current version: ${currentVersion}`));
+                console.log(chalk.green(`Latest version: ${latestVersion}`));
+                console.log(
+                  chalk.blue("\nRun the following command to update:")
+                );
+                console.log(chalk.white("npm install -g dev-hub-cli@latest\n"));
+              } else {
+                console.log(
+                  chalk.green("\n✓ CLI is up to date ") +
+                    chalk.gray(`(version ${currentVersion})`)
+                );
+              }
+              resolve();
+            } catch (error) {
+              resolve();
+            }
+          });
+        }
+      )
+      .on("error", () => {
+        resolve();
+      });
+  });
+}
+//runCommand function
 async function runCommand(command, cwd) {
   return new Promise((resolve, reject) => {
     exec(command, { cwd }, (error, stdout, stderr) => {
@@ -28,6 +81,7 @@ const { createReactProject } = require("../src/projects/reactproject");
 const { createElectronProject } = require("../src/projects/electronproject");
 const { createFiveMProject } = require("../src/projects/fiveproject");
 const { createRedMProject } = require("../src/projects/redproject");
+const { createVueProject } = require("../src/projects/vueproject");
 
 // ASCII Art Banner
 console.log(
@@ -53,6 +107,9 @@ program
   .command("create")
   .description("Create a new project")
   .action(async () => {
+    // Checking for updates before showing prompts
+    await checkForUpdates();
+
     const questions = [
       {
         type: "input",
@@ -76,13 +133,13 @@ program
             name: "RedM - Red Dead Redemption 2 multiplayer resource",
             value: "redm",
           },
+          { name: "Vue.js - Progressive JavaScript Framework", value: "vue" },
         ],
       },
     ];
 
     const { projectName, template } = await inquirer.prompt(questions);
 
-    // Get advanced options based on template
     let advancedOptions = {};
     if (template === "html") {
       const htmlOptions = await inquirer.prompt([
@@ -148,13 +205,35 @@ program
           installer: electronOptions.features.includes("installer"),
         },
       };
+    } else if (template === "vue") {
+      const vueOptions = await inquirer.prompt([
+        {
+          type: "checkbox",
+          name: "features",
+          message: "Select Vue.js features:",
+          choices: [
+            { name: "TypeScript", value: "typescript" },
+            { name: "Vue Router", value: "router" },
+            { name: "Pinia State Management", value: "pinia" },
+            { name: "Unit Testing", value: "testing" },
+          ],
+        },
+      ]);
+
+      // Convert array of features to object format
+      advancedOptions = {
+        features: vueOptions.features.reduce((acc, feature) => {
+          acc[feature] = true;
+          return acc;
+        }, {}),
+      };
     }
 
     // Create project in current directory
     const projectPath = path.join(process.cwd(), projectName);
 
     try {
-      console.log(); // Add a blank line for spacing
+      console.log();
       const spinner = ora("Creating project structure...").start();
 
       try {
@@ -201,12 +280,21 @@ program
             console.log(chalk.blue("\nResource created at:"));
             console.log(chalk.white(`  ${projectPath}`));
             break;
+
+          case "vue":
+            spinner.text = "Creating Vue.js project structure...";
+            await createVueProject(projectPath, advancedOptions);
+            spinner.succeed("Project structure created");
+            spinner.start("Installing dependencies...");
+            await runCommand("npm install", projectPath);
+            spinner.succeed("Dependencies installed");
+            break;
         }
 
-        // Only show next steps for npm projects
-        if (["html", "react", "electron"].includes(template)) {
-          console.log(chalk.blue("\nNext step:"));
-          console.log(chalk.white("  Run `npm start` to launch your project"));
+        if (["html", "react", "electron", "vue"].includes(template)) {
+          console.log(chalk.blue("\nNext steps:"));
+          console.log(chalk.white(`  1. cd ${projectName}`));
+          console.log(chalk.white("  2. npm run dev"));
         }
       } catch (error) {
         spinner.fail("Error creating project");
